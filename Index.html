@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Brithany 🌸</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #f857a6, #ff5858);
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        .floating {
+            position: absolute;
+            animation: float 12s linear infinite;
+            z-index: -1;
+            opacity: 0.6;
+        }
+        @keyframes float {
+            0% { transform: translateY(100vh) translateX(0); }
+            100% { transform: translateY(-10vh) translateX(60px); }
+        }
+        .btn-love {
+            background-color: #d63384;
+            transition: all 0.3s;
+        }
+        .btn-love:hover {
+            background-color: #e83e8c;
+            transform: scale(1.1);
+        }
+        #no-btn { position: relative; }
+    </style>
+</head>
+<body>
+
+    <div id="game-container" class="p-8 bg-white/20 backdrop-blur-md rounded-3xl shadow-2xl max-w-md mx-4">
+        <div id="content">
+            <h1 id="main-text" class="text-3xl font-bold mb-6">¿Te gusto un poquito, Brithany?</h1>
+            <div id="buttons" class="space-x-4">
+                <button onclick="nextStep(1)" class="btn-love px-8 py-3 rounded-full font-bold">¡Sí!</button>
+                <button id="no-btn" onmouseover="moveButton()" class="bg-gray-500 px-8 py-3 rounded-full font-bold">No</button>
+            </div>
+        </div>
+        
+        <!-- Reproductor de Música -->
+        <div class="mt-8">
+            <audio id="love-music" loop>
+                <source src="TU_LINK_DE_JUKEHOST_AQUI.mp3" type="audio/mpeg">
+            </audio>
+            <button onclick="toggleMusic()" id="music-btn" class="text-sm underline">🎵 Dale play a nuestra canción</button>
+        </div>
+    </div>
+
+    <script>
+        // Configuración de Brithany
+        const config = {
+            valentineName: "Brithany",
+            secretAnswer: "¡Lo sabía! Pero yo no solo te quiero... ¡te amo! ❤️",
+            celebrationMsg: "¡SÍII! Soy el más afortunado por tener a Brithany... 🏃‍♂️💨",
+            emojis: ['✨', '💖', '🌸', '💗', '⭐', '🧸']
+        };
+
+        let step = 0;
+
+        // Crear elementos flotantes
+        function createHearts() {
+            for(let i=0; i<20; i++) {
+                let heart = document.createElement('div');
+                heart.className = 'floating';
+                heart.innerHTML = config.emojis[Math.floor(Math.random()*config.emojis.length)];
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDelay = Math.random() * 10 + 's';
+                heart.style.fontSize = Math.random() * 20 + 20 + 'px';
+                document.body.appendChild(heart);
+            }
+        }
+        createHearts();
+
+        function moveButton() {
+            const btn = document.getElementById('no-btn');
+            const x = Math.random() * (window.innerWidth - btn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - btn.offsetHeight);
+            btn.style.position = 'absolute';
+            btn.style.left = x + 'px';
+            btn.style.top = y + 'px';
+        }
+
+        function nextStep(val) {
+            const container = document.getElementById('content');
+            if(step === 0) {
+                alert(config.secretAnswer);
+                container.innerHTML = `
+                    <h1 class="text-2xl font-bold mb-4">¿Y qué tanto me amas?</h1>
+                    <input type="range" min="1" max="1000" value="50" class="w-full h-2 bg-pink-200 rounded-lg appearance-none cursor-pointer mb-4" id="love-slider">
+                    <p id="love-val" class="text-xl mb-4">¡Mucho!</p>
+                    <button onclick="nextStep(1)" class="btn-love px-8 py-3 rounded-full font-bold">Siguiente ❤️</button>
+                `;
+                step++;
+            } else if (step === 1) {
+                container.innerHTML = `
+                    <h1 class="text-2xl font-bold mb-6">Brithany, ¿quieres ser mi San Valentín...?</h1>
+                    <div class="space-x-4">
+                        <button onclick="celebrate()" class="btn-love px-8 py-3 rounded-full font-bold">¡Acepto! ✨</button>
+                        <button onmouseover="moveButton()" class="bg-gray-500 px-8 py-3 rounded-full font-bold">Piénsalo... 🥺</button>
+                    </div>
+                `;
+            }
+        }
+
+        function celebrate() {
+            document.getElementById('content').innerHTML = `
+                <h1 class="text-3xl font-bold mb-4">${config.celebrationMsg}</h1>
+                <p class="text-5xl">✨🎁💖🌹🍫💋❤️</p>
+            `;
+            setInterval(() => { createHearts(); }, 300);
+        }
+
+        function toggleMusic() {
+            const music = document.getElementById('love-music');
+            const btn = document.getElementById('music-btn');
+            if (music.paused) {
+                music.play();
+                btn.innerHTML = "🔇 Pausar música";
+            } else {
+                music.pause();
+                btn.innerHTML = "🎵 Dale play a nuestra canción";
+            }
+        }
+    </script>
+</body>
+</html>
